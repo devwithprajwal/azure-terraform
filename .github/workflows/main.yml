@@ -33,6 +33,6 @@ jobs:
           terraform init
           terraform plan -var client_id="${{ secrets.CLIENT_ID }}" -var client_secret="${{ secrets.CLIENT_SECRET }}" -var subscription_id="${{ secrets.SUBSCRIPTION_ID }}" -var tenant_id="${{ secrets.TENANT_ID }}"
           terraform apply -var client_id="${{ secrets.CLIENT_ID }}" -var client_secret="${{ secrets.CLIENT_SECRET }}" -var subscription_id="${{ secrets.SUBSCRIPTION_ID }}" -var tenant_id="${{ secrets.TENANT_ID }}" --auto-approve
-          terraform destroy -var client_id="${{ secrets.CLIENT_ID }}" -var client_secret="${{ secrets.CLIENT_SECRET }}" -var subscription_id="${{ secrets.SUBSCRIPTION_ID }}" -var tenant_id="${{ secrets.TENANT_ID }}" --auto-approve
+          
           
           
