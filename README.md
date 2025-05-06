@@ -2,13 +2,13 @@
 
 ### Summary
 
--This repository uses GitHub Actions to run a **CI/CD pipeline** that automates infrastructure deployment using Terraform.
+- This repository uses GitHub Actions to run a **CI/CD pipeline** that automates infrastructure deployment using Terraform.
 
--It sets up **Azure resources** like **Resource Group, Container Registry, Key Vault, Managed Identity, and Access Policies**.
+- It sets up **Azure resources** like **Resource Group, Container Registry, Key Vault, Managed Identity, and Access Policies**.
 
--**Terraform state file** is stored securely in an existing **Azure Storage Account** inside a **Blob Container** for backend tracking.
+- **Terraform state file** is stored securely in an existing **Azure Storage Account** inside a **Blob Container** for backend tracking.
 
--**Azure credentials** (Client ID, Secret, Subscription ID, Tenant ID) are stored securely in **GitHub Secrets** to authenticate with **Azure**.
+- **Azure credentials** (Client ID, Secret, Subscription ID, Tenant ID) are stored securely in **GitHub Secrets** to authenticate with **Azure**.
 
 ---
 
