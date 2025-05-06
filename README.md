@@ -36,7 +36,7 @@ steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 ```
-5. Configure Azure Credentials
+4. Configure Azure Credentials
    - Sets up Azure credentials using **GitHub Secrets**.
    - Required to authenticate Terraform against Azure for resource creation.
 ```yaml
@@ -47,7 +47,7 @@ steps:
         echo "ARM_SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}" >> $GITHUB_ENV
         echo "ARM_TENANT_ID=${{ secrets.TENANT_ID }}" >> $GITHUB_ENV
 ```
-6. Installs Terraform CLI version 1.0.11 in the runner.
+5. Installs Terraform CLI version 1.0.11 in the runner.
 
 ```yaml
 - name: Set up Terraform
@@ -55,7 +55,7 @@ steps:
       with:
         terraform_version: 1.0.11
 ```
-7. Run Terraform Commands
+6. Run Terraform Commands
    - **terraform init**: Initializes Terraform and downloads the required provider plugins.
    - **terraform plan**: Shows what Terraform will do, injecting the secrets from GitHub Secrets.
    - **terraform apply**: Provisions the infrastructure automatically, including:
