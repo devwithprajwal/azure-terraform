@@ -1,14 +1,14 @@
-##  Terraform AWS Deployment via GitHub Actions
+##  Terraform Azure Deployment via GitHub Actions
 
-This repository uses **GitHub Actions** to automatically deploy infrastructure on **AWS using Terraform**.
+This repository uses **GitHub Actions** to automatically deploy infrastructure on **Azure using Terraform**.
 
 ---
 
 ###  Workflow Summary
 
-- Sets up Terraform to manage cloud resources safely using an S3 bucket
+- Sets up Terraform to manage cloud resources safely using an Azure Storage Account
 
-- Logs in to AWS using secret keys saved in GitHub
+- Logs in to Azure using secret keys saved in GitHub
 
 - Automatically stores an secret value in secret manager and statefile in S3 bucket
 
