@@ -1,5 +1,7 @@
 ##  Terraform Azure Deployment Pipeline via GitHub Actions
 
+### Summary
+
 -This repository uses GitHub Actions to run a **CI/CD pipeline** that automates infrastructure deployment using Terraform.
 
 -It sets up **Azure resources** like **Resource Group, Container Registry, Key Vault, Managed Identity, and Access Policies**.
