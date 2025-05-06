@@ -1,18 +1,12 @@
-##  Terraform Azure Deployment via GitHub Actions
+##  Terraform Azure Deployment Pipeline via GitHub Actions
 
-This repository uses **GitHub Actions** to automatically deploy infrastructure on **Azure using Terraform**.
+-This repository uses GitHub Actions to run a **CI/CD pipeline** that automates infrastructure deployment using Terraform.
 
----
+-It sets up **Azure resources** like Resource Group, Container Registry, Key Vault, Managed Identity, and Access Policies.
 
-###  Workflow Summary
+-**Terraform state file** is stored securely in an existing **Azure Storage Account** inside a **Blob Container** for backend tracking.
 
-- Sets up Terraform to manage cloud resources safely using an Azure Storage Account
-
-- Logs in to Azure using secret keys saved in GitHub
-
-- Automatically stores an secret value in secret manager and statefile in S3 bucket
-
-- Runs every time you push or make a pull request to the main branch
+-**Azure credentials** (Client ID, Secret, Subscription ID, Tenant ID) are stored securely in **GitHub Secrets** to authenticate with **Azure**.
 
 ---
 
@@ -33,31 +27,23 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 ```
-3. Defines reusable environment variables for your Azure resource group and AKS cluster.
-
-```yaml
-env:
-      RESOURCE_GROUP_NAME: abc-rg
-      AKS_CLUSTER_NAME: akscluster
-```
-4. Clones the GitHub repo into the runner to access Terraform files.
+3. Clones the GitHub repo into the runner to access Terraform files.
 
 ```yaml
 steps:
       - name: Checkout repository
         uses: actions/checkout@v2
 ```
-5. Configure AWS Credentials
-   - Sets up AWS credentials using **GitHub Secrets**.
-   - Required to authenticate Terraform against AWS for resource creation.
+5. Configure Azure Credentials
+   - Sets up Azure credentials using **GitHub Secrets**.
+   - Required to authenticate Terraform against Azure for resource creation.
 ```yaml
-- name: Configure AWS Credentials
-      if: env.AWS_ROLE_ARN == ''
-      uses: aws-actions/configure-aws-credentials@v3
-      with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-1
+- name: Set environment variable's
+      run: |
+        echo "ARM_CLIENT_ID=${{ secrets.CLIENT_ID }}" >> $GITHUB_ENV
+        echo "ARM_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}" >> $GITHUB_ENV
+        echo "ARM_SUBSCRIPTION_ID=${{ secrets.SUBSCRIPTION_ID }}" >> $GITHUB_ENV
+        echo "ARM_TENANT_ID=${{ secrets.TENANT_ID }}" >> $GITHUB_ENV
 ```
 6. Installs Terraform CLI version 1.0.11 in the runner.
 
@@ -69,15 +55,14 @@ steps:
 ```
 7. Run Terraform Commands
    - **terraform init**: Initializes Terraform and downloads the required provider plugins.
-   - **terraform plan**: Shows what Terraform will do, injecting the secret_value from GitHub Secrets.
+   - **terraform plan**: Shows what Terraform will do, injecting the secrets from GitHub Secrets.
    - **terraform apply**: Provisions the infrastructure automatically, including:
-     - Storing the .tfstate file in the S3 backend.
-     - Creating a secret in AWS Secrets Manager with the value from SECRET_VALUE.
+     - Storing the .tfstate file in the Azure Storage Account in backend in Blob container.
 
 ```yaml
-- name: terraform
+- name: Terraformautomation
       run: |
           terraform init
-          terraform plan -var secret_value="${{ secrets.SECRET_VALUE }}"
-          terraform apply -var secret_value="${{ secrets.SECRET_VALUE }}" -auto-approve
+          terraform plan -var client_id="${{ secrets.CLIENT_ID }}" -var client_secret="${{ secrets.CLIENT_SECRET }}" -var subscription_id="${{ secrets.SUBSCRIPTION_ID }}" -var tenant_id="${{ secrets.TENANT_ID }}"
+          terraform apply -var client_id="${{ secrets.CLIENT_ID }}" -var client_secret="${{ secrets.CLIENT_SECRET }}" -var subscription_id="${{ secrets.SUBSCRIPTION_ID }}" -var tenant_id="${{ secrets.TENANT_ID }}" --auto-approve
 ```
